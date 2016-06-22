@@ -1,16 +1,18 @@
 def input_students
   puts "Please enter the names of the students"
+  puts "Please enter their name, age, and country of birth separated by commas"
+  puts "For example: Arunas Skirius, 25, Lithuania"
   puts "To finish, just hit return twice"
   #create an empty array
   students = []
-  name = gets.chomp
+  name = gets.chomp.split(',').map {|n| n.strip}
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
-    students << {name: name, cohort: :november}
+    students << {name: name[0], cohort: :november, age: name[1].to_i, country: name[2]}
     puts "Now we have #{students.count} students"
     #get another name from the user
-    name = gets.chomp
+    name = gets.chomp.split(',').map {|n| n.strip}
   end
   students
 end
@@ -39,7 +41,8 @@ def print(students)
   # end
   index = 0
   while index < students.length do
-    puts "#{index + 1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)"
+    puts "#{index + 1}. #{students[index][:name]} (#{students[index][:cohort]} cohort) - " +
+         "#{students[index][:age]}, from #{students[index][:country]}"
     index += 1
   end
 end
@@ -58,5 +61,5 @@ print_footer(students)
 # letter = gets.chomp
 # print(select_letter(students, letter))
 
-puts "Printing names shorter than 12 characters:"
-print(short_names(students, 12))
+# puts "Printing names shorter than 12 characters:"
+# print(short_names(students, 12))
