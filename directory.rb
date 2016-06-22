@@ -22,6 +22,12 @@ def select_letter(students, letter)
   students
 end
 
+def short_names(students, len)
+  students.select do |student|
+    student[:name].length < len
+  end
+end
+
 def print_header
   puts "The students of Villains Academy"
   puts "----------"
@@ -43,6 +49,9 @@ print_header
 print(students)
 print_footer(students)
 
-puts "Enter a starting letter to filter the student names: "
-letter = gets.chomp
-print(select_letter(students, letter))
+# puts "Enter a starting letter to filter the student names: "
+# letter = gets.chomp
+# print(select_letter(students, letter))
+
+puts "Printing names shorter than 12 characters:"
+print(short_names(students, 12))
