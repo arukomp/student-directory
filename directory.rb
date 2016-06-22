@@ -49,15 +49,12 @@ def print_header
 end
 
 def print(students)
-  # students.each.with_index do |student, index|
-  #   puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-  # end
   index = 0
   while index < students.length do
-    puts "#{index + 1}. " + "#{students[index][:name]}".center(25) +
-         "(#{students[index][:cohort]} cohort) - " +
-         "#{students[index][:age]}, " +
-         "from #{students[index][:country]}"
+    puts "#{index + 1}. " + "#{students[index][:name]}".center(30) +
+         "(#{students[index][:cohort]} cohort)".center(20) +
+         "#{students[index][:age]}".center(6) +
+         "#{students[index][:country]}".center(20)
     index += 1
   end
 end
@@ -69,11 +66,13 @@ def print_cohorts(students)
     if cohorts[s[:cohort]] == nil then cohorts[s[:cohort]] = []; end
     cohorts[s[:cohort]] << s
   end
-
   #and now print them
   cohorts.each do |cohort, students|
-    puts "-- Students for the #{cohort.to_s.capitalize} cohort:"
+    puts "-- " + (pluralize("Student", students.count) + " for the #{cohort.to_s.capitalize} cohort:").center(50) +
+         "Age".center(6) +
+         "Country of Birth".center(20)
     print(students)
+    puts
   end
 end
 
@@ -93,10 +92,3 @@ if (students.length > 0)
   print_cohorts(students)
   print_footer(students)
 end
-
-# puts "Enter a starting letter to filter the student names: "
-# letter = gets.chomp
-# print(select_letter(students, letter))
-
-# puts "Printing names shorter than 12 characters:"
-# print(short_names(students, 12))
