@@ -12,7 +12,7 @@ def input_students
   while !name.empty? do
     if name[0] == "" || name[2].to_i <= 0 || name[3] == ""
       puts "* Please make sure you enter Full name, cohort, age, and country of birth separated by commas *"
-    elsif !months.include?(name[1].downcase)
+    elsif name[1] != "" && !months.include?(name[1].downcase)
       puts "* Make sure you spell the cohort correctly *"
     else
       #add the student hash to the array
@@ -62,6 +62,21 @@ def print(students)
   end
 end
 
+def print_cohorts(students)
+  # split the students into different cohorts
+  cohorts = {}
+  students.each do |s|
+    if cohorts[s[:cohort]] == nil then cohorts[s[:cohort]] = []; end
+    cohorts[s[:cohort]] << s
+  end
+
+  #and now print them
+  cohorts.each do |cohort, students|
+    puts "-- Students for the #{cohort.to_s.capitalize} cohort:"
+    print(students)
+  end
+end
+
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
@@ -69,7 +84,7 @@ end
 # Start the program!
 students = input_students
 print_header
-print(students)
+print_cohorts(students)
 print_footer(students)
 
 # puts "Enter a starting letter to filter the student names: "
