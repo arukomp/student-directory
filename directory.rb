@@ -31,8 +31,8 @@ def short_names(students, len)
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "----------"
+  puts "The students of Villains Academy".center (40)
+  puts "----------".center(40)
 end
 
 def print(students)
@@ -41,8 +41,10 @@ def print(students)
   # end
   index = 0
   while index < students.length do
-    puts "#{index + 1}. #{students[index][:name]} (#{students[index][:cohort]} cohort) - " +
-         "#{students[index][:age]}, from #{students[index][:country]}"
+    puts "#{index + 1}. " + "#{students[index][:name]}".center(25) + 
+         "(#{students[index][:cohort]} cohort) - " +
+         "#{students[index][:age]}, " +
+         "from #{students[index][:country]}"
     index += 1
   end
 end
