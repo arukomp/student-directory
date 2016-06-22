@@ -7,7 +7,7 @@ def input_students
   students = []
   # a list of valid cohorts
   months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november","december"]
-  name = gets.chomp.split(',').map {|n| n.strip}
+  name = gets.rstrip.split(',').map {|n| n.strip}
   #while the name is not empty, repeat this code
   while !name.empty? do
     if name[0] == "" || name[2].to_i <= 0 || name[3] == ""
@@ -25,7 +25,7 @@ def input_students
       puts "Now we have #{students.count} " + pluralize("student", students.count)
     end
     #get another name from the user
-    name = gets.chomp.split(',').map {|n| n.strip}
+    name = gets.rstrip.split(',').map {|n| n.strip}
   end
   students
 end
