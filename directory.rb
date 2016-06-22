@@ -22,7 +22,7 @@ def input_students
         age: name[2].to_i,
         country: name[3]
       }
-      puts "Now we have #{students.count} students"
+      puts "Now we have #{students.count} " + pluralize("student", students.count)
     end
     #get another name from the user
     name = gets.chomp.split(',').map {|n| n.strip}
@@ -78,7 +78,12 @@ def print_cohorts(students)
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+  puts "Overall, we have #{names.count} great " + pluralize("student", names.count)
+end
+
+def pluralize(word, number)
+  return "#{word}" if (number.to_s[-2..-1] != "11" && number.to_s[-1] == "1")
+  "#{word}s"
 end
 
 # Start the program!
