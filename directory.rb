@@ -15,6 +15,13 @@ def input_students
   students
 end
 
+def select_letter(students, letter)
+  students = students.select do |student|
+    student[:name].downcase[0] == letter.downcase[0]
+  end
+  students
+end
+
 def print_header
   puts "The students of Villains Academy"
   puts "----------"
@@ -35,3 +42,7 @@ students = input_students
 print_header
 print(students)
 print_footer(students)
+
+puts "Enter a starting letter to filter the student names: "
+letter = gets.chomp
+print(select_letter(students, letter))
