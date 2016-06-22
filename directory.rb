@@ -88,9 +88,11 @@ end
 
 # Start the program!
 students = input_students
-print_header
-print_cohorts(students)
-print_footer(students)
+if (students.length > 0)
+  print_header
+  print_cohorts(students)
+  print_footer(students)
+end
 
 # puts "Enter a starting letter to filter the student names: "
 # letter = gets.chomp
