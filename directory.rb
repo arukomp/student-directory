@@ -92,14 +92,15 @@ def insert_student(line)
 end
 
 def try_load_students
-  filename = ARGV.first# first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
+  filename = ARGV.first || "students.csv" # first argument from the command line
   if File.exists?(filename) # if it exists
     load_students(filename)
-     puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist."
-    exit # quit the program
+    puts "Sorry, #{filename} doesn't exist. Could not load the student list."
+    # exit
+    # Carry on with the program because the user might have run it for the first
+    # time and there's no 'students.csv' file yet
   end
 end
 
