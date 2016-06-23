@@ -21,12 +21,12 @@ def process(selection)
     input_students
   when "2"
     show_students
-  when "9"
-    exit # this will cause the program to terminate
   when "3"
     save_students
   when "4"
     load_students
+  when "9"
+    exit # this will cause the program to terminate
   else
     puts "I don't know what you meant, try again"
   end
@@ -59,9 +59,7 @@ def print_header
 end
 
 def print_student_list
-  @students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
-  end
+  @students.each {|student| puts "#{student[:name]} (#{student[:cohort]} cohort)"}
 end
 
 def print_footer
@@ -72,11 +70,7 @@ def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
   # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
+  @students.each {|student| file.puts([student[:name], student[:cohort]].join(","))}
   file.close
 end
 
