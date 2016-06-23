@@ -13,14 +13,26 @@ def save_students
   puts "Student list successfully saved!"
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age, country = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, age: age, country: country}
   end
   file.close
   puts "Student list successfully loaded!"
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}."
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
 end
 
 def input_students
@@ -30,7 +42,7 @@ def input_students
   puts "To finish, just hit return twice"
   # a list of valid cohorts
   months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november","december"]
-  name = gets.rstrip.split(',').map {|n| n.strip}
+  name = STDIN.gets.rstrip.split(',').map {|n| n.strip}
   #while the name is not empty, repeat this code
   while !name.empty? do
     if name[0] == "" || name[2].to_i <= 0 || name[3] == ""
@@ -48,7 +60,7 @@ def input_students
       puts "Now we have #{@students.count} " + pluralize("student", @students.count)
     end
     #get another name from the user
-    name = gets.rstrip.split(',').map {|n| n.strip}
+    name = STDIN.gets.rstrip.split(',').map {|n| n.strip}
   end
 end
 
@@ -107,6 +119,7 @@ def pluralize(word, number)
 end
 
 def print_menu
+  puts "-- Student Directory --"
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
@@ -140,9 +153,10 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
 # Start the program!
+try_load_students
 interactive_menu
