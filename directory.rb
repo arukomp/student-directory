@@ -1,9 +1,21 @@
 @students = []  # global variable to be accessible by all methods
 
+def save_students
+  #open the file for writing
+  file = File.open("students.csv", "w")
+  #iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort], student[:age], student[:country]]
+    csv_line = student_data.join(',')
+    file.puts csv_line
+  end
+  file.close
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "Please enter their name, cohort (defaults to this month), age, and country of birth separated by commas"
-  puts "For example: Arunas Skirius, november, 25, Lithuania"
+  puts "For example: Arunas Skirius, july, 25, Lithuania"
   puts "To finish, just hit return twice"
   # a list of valid cohorts
   months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november","december"]
@@ -86,6 +98,7 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save the list to students.csv"
   puts "9. Exit"
 end
 
@@ -95,6 +108,8 @@ def process(selection)
     input_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
     exit
   else
