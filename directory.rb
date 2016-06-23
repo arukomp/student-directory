@@ -1,10 +1,10 @@
+@students = []  # global variable to be accessible by all methods
+
 def input_students
   puts "Please enter the names of the students"
   puts "Please enter their name, cohort (defaults to this month), age, and country of birth separated by commas"
   puts "For example: Arunas Skirius, november, 25, Lithuania"
   puts "To finish, just hit return twice"
-  #create an empty array
-  students = []
   # a list of valid cohorts
   months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november","december"]
   name = gets.rstrip.split(',').map {|n| n.strip}
@@ -16,29 +16,27 @@ def input_students
       puts "* Make sure you spell the cohort correctly *"
     else
       #add the student hash to the array
-      students << {
+      @students << {
         name: name[0],
         cohort: name[1] == "" ? Time.new.strftime("%B").downcase.to_sym : name[1].downcase.to_sym,
         age: name[2].to_i,
         country: name[3]
       }
-      puts "Now we have #{students.count} " + pluralize("student", students.count)
+      puts "Now we have #{@students.count} " + pluralize("student", @students.count)
     end
     #get another name from the user
     name = gets.rstrip.split(',').map {|n| n.strip}
   end
-  students
 end
 
-def select_letter(students, letter)
-  students = students.select do |student|
+def select_letter(letter)
+  @students.select do |student|
     student[:name].downcase[0] == letter.downcase[0]
   end
-  students
 end
 
-def short_names(students, len)
-  students.select do |student|
+def short_names(len)
+  @students.select do |student|
     student[:name].length < len
   end
 end
@@ -59,10 +57,10 @@ def print(students)
   end
 end
 
-def print_cohorts(students)
+def print_cohorts
   # split the students into different cohorts
   cohorts = {}
-  students.each do |s|
+  @students.each do |s|
     if cohorts[s[:cohort]] == nil then cohorts[s[:cohort]] = []; end
     cohorts[s[:cohort]] << s
   end
@@ -76,8 +74,8 @@ def print_cohorts(students)
   end
 end
 
-def print_footer(names)
-  puts "Overall, we have #{names.count} great " + pluralize("student", names.count)
+def print_footer
+  puts "Overall, we have #{@students.count} great " + pluralize("student", @students.count)
 end
 
 def pluralize(word, number)
@@ -85,28 +83,35 @@ def pluralize(word, number)
   "#{word}s"
 end
 
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you meant, try again"
+  end
+end
+
+def show_students
+  print_header
+  print_cohorts
+  print_footer
+end
+
 def interactive_menu
-  students = []
   loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the Students"
-    puts "2. Show the Students"
-    puts "9. Exit" #9 because we'll be adding more items
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
-    when "1"
-      students = input_students
-    when "2"
-      print_header
-      print_cohorts(students)
-      print_footer(students)
-    when "9"
-      exit
-    else
-      puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
