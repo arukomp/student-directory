@@ -3,8 +3,8 @@
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from a file"
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -66,20 +66,36 @@ def print_footer
   puts "Overall, we have #{@students.count} great students"
 end
 
+def get_filename
+  filename = ''
+  while filename == '' do
+    puts "Please enter the name of the students file: "
+    filename = gets.chomp
+  end
+  filename
+end
+
 def save_students
   # open the file for writing
-  file = File.open("students.csv", "w")
+  puts "Preparing to save the student list..."
+  filename = get_filename
+  file = File.open(filename, "w")
   # iterate over the array of students
   @students.each {|student| file.puts([student[:name], student[:cohort]].join(","))}
   file.close
-  puts "--> Students have been saved to students.csv"
+  puts "--> Students have been saved to '#{filename}'"
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each {|line| insert_student(line)}
-  file.close
-  puts "--> Students have been loaded from #{filename}"
+def load_students(filename = nil)
+  filename = filename.nil? ? get_filename : filename
+  if File.exists?(filename)
+    file = File.open(filename, "r")
+    file.readlines.each {|line| insert_student(line)}
+    file.close
+    puts "--> Students have been loaded from '#{filename}'."
+  else
+    puts "--> File '#{filename}' not found. Could not load the list."
+  end
 end
 
 def insert_student(line)
@@ -89,15 +105,8 @@ end
 
 def try_load_students
   filename = ARGV.first || "students.csv" # first argument from the command line
-  if File.exists?(filename) # if it exists
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist. Could not load the student list."
-    # exit
-    # Carry on with the program because the user might have run it for the first
-    # time and there's no 'students.csv' file yet
-  end
+  load_students(filename)
+  puts "Loaded #{@students.count} from '#{filename}'"
 end
 
 try_load_students
