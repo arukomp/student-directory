@@ -72,12 +72,14 @@ def save_students
   # iterate over the array of students
   @students.each {|student| file.puts([student[:name], student[:cohort]].join(","))}
   file.close
+  puts "--> Students have been saved to students.csv"
 end
 
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each {|line| insert_student(line)}
   file.close
+  puts "--> Students have been loaded from #{filename}"
 end
 
 def insert_student(line)
