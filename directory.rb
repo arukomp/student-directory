@@ -79,19 +79,19 @@ def save_students
   # open the file for writing
   puts "Preparing to save the student list..."
   filename = get_filename
-  file = File.open(filename, "w")
+  File.open(filename, "w") do |file|
   # iterate over the array of students
-  @students.each {|student| file.puts([student[:name], student[:cohort]].join(","))}
-  file.close
+    @students.each {|student| file.puts([student[:name], student[:cohort]].join(","))}
+  end
   puts "--> Students have been saved to '#{filename}'"
 end
 
 def load_students(filename = nil)
   filename = filename.nil? ? get_filename : filename
   if File.exists?(filename)
-    file = File.open(filename, "r")
-    file.readlines.each {|line| insert_student(line)}
-    file.close
+    File.open(filename, "r") do |file|
+      file.readlines.each {|line| insert_student(line)}
+    end
     puts "--> Students have been loaded from '#{filename}'."
   else
     puts "--> File '#{filename}' not found. Could not load the list."
